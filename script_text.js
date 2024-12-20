@@ -21,7 +21,7 @@ function init_text() {
   root.scene.add(light);
 
   var tl = new TimelineMax({
-    delay: 2, 
+    delay: 3, 
   });
   tl.fromTo(textAnimation, 4,
     {animationProgress:0.0},
