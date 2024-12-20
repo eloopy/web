@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    background-color: black;
+    /*overflow:hidden;*/
+}
+ 
+#three-container{
+
+   position: absolute;
+}
