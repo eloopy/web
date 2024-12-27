@@ -45,7 +45,7 @@ function finished(){
 }
 
 function createTextAnimation() {
-  var geometry = generateTextGeometry('It all started with the Big Bang', {
+  var geometry = generateTextGeometry('It all started with a Big Bang', {
     size:30,
     height:12,
     font:'Good Times',
