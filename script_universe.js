@@ -2,18 +2,21 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const width = window.innerWidth, height = window.innerHeight;
-let zoom = 10000;
+let zoom = 12000;
 let timeNow = 0;
 let simplex = new SimplexNoise();
 
+window.addEventListener('load', function () {
+    const myTimeout = setTimeout(animate, 3000);
+  })
 
 // Init
-const myTimeout = setTimeout(animate, 2000);
+
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera( 55, width / height, 0.01, 10000);
-camera.position.set(0, 0, 10000);
+const camera = new THREE.PerspectiveCamera( 55, width / height, 0.01, 12000);
+camera.position.set(0, 0, 12000);
 
 const renderer = new THREE.WebGLRenderer( { 
     antialias: true,
@@ -26,7 +29,7 @@ document.body.appendChild( renderer.domElement );
 // Orbit Control
 const orbitCtrl = new OrbitControls(camera, renderer.domElement);
 orbitCtrl.autoRotate = true;
-orbitCtrl.maxDistance = 400;
+orbitCtrl.maxDistance = 900;
 orbitCtrl.minDistance = 100;
 orbitCtrl.enablePan = false;
 
@@ -38,12 +41,16 @@ const textureSun = loaderTexture.load('./assets/sun.jpg');
 const texturePlanetMercury = loaderTexture.load("./assets/mercury.jpg"); 
 const texturePlanetVenus = loaderTexture.load("./assets/venus.jpg"); 
 const texturePlanetEarth = loaderTexture.load("./assets/earth.jpg");
+const textureMoon = loaderTexture.load("./assets/moon.jpg");
 const texturePlanetMars = loaderTexture.load("./assets/mars.jpg");  
-const texturePlanetJupiter = loaderTexture.load("./assets/jupiter.jpg");  
+const texturePlanetJupiter = loaderTexture.load("./assets/jupiter.jpg");
+const texturePlanetSatun = loaderTexture.load("./assets/saturn.jpg"); 
+const texturePlanetUranus = loaderTexture.load("./assets/uranus.jpg");  
+const texturePlanetNeptune = loaderTexture.load("./assets/neptune.jpg");
 
 // Universe
 textureUniverse.anisotropy = 16;
-const UniverseGeometry = new THREE.IcosahedronGeometry(400, 16);
+const UniverseGeometry = new THREE.IcosahedronGeometry(600, 16);
 const UniverseMaterial = new THREE.MeshBasicMaterial({
     side: THREE.BackSide,
     map: textureUniverse,
@@ -105,6 +112,21 @@ const planetEarth = new THREE.Mesh(PlanetEarthGeometry, planetEarthMaterial);
 planetEarth.position.set(140, 0, 0);
 PlanetEarthGroup.add(planetEarth);
 
+/* Moon */
+const MoonGroup = new THREE.Group();
+MoonGroup.position.set(140, 0, 0);
+PlanetEarthGroup.add(MoonGroup);
+
+textureMoon.anisotropy = 16;
+const MoonGeometry = new THREE.IcosahedronGeometry(2, 10);
+const MoonMaterial = new THREE.MeshBasicMaterial({ 
+    map: textureMoon
+});
+
+const Moon = new THREE.Mesh(MoonGeometry, MoonMaterial);
+Moon.position.set(15, 0, 0);
+MoonGroup.add(Moon);
+
 
 /* planet Mars */
 const PlanetMarsGroup = new THREE.Group();
@@ -135,21 +157,91 @@ const planetJupiter = new THREE.Mesh(PlanetJupiterGeometry, planetJupiterMateria
 planetJupiter.position.set(250, 0, 0);
 PlanetJupiterGroup.add(planetJupiter);
 
+/* planet Saturn */
+
+const PlanetSaturnGroup = new THREE.Group();
+scene.add(PlanetSaturnGroup);
+
+texturePlanetSatun.anisotropy = 16;
+const PlanetSatunGeometry = new THREE.IcosahedronGeometry(20, 10);
+const planetSatunMaterial = new THREE.MeshBasicMaterial({ 
+    map: texturePlanetSatun
+});
+
+const planetSatun = new THREE.Mesh(PlanetSatunGeometry, planetSatunMaterial);
+planetSatun.position.set(350, 0, 0);
+PlanetSaturnGroup.add(planetSatun);
+
+// Create Saturn's rings
+const ringSaturnGeometry = new THREE.RingGeometry(35, 25, 32);
+const ringSaturnMaterial = new THREE.MeshBasicMaterial({
+    color: 0xaaaaaa,
+    side: THREE.DoubleSide,
+    transparent: false,
+    opacity: 0.8
+});
+const SaturnRing = new THREE.Mesh(ringSaturnGeometry, ringSaturnMaterial);
+SaturnRing.rotation.x = Math.PI / 2;  // Rotate the ring to lay flat
+planetSatun.add(SaturnRing); 
+
+/* planet Uranus */
+
+const PlanetUranosGroup = new THREE.Group();
+scene.add(PlanetUranosGroup);
+
+texturePlanetUranus.anisotropy = 16;
+const PlanetUranusGeometry = new THREE.IcosahedronGeometry(15, 10);
+const planetUranosMaterial = new THREE.MeshBasicMaterial({ 
+    map: texturePlanetUranus
+});
+
+const planetUranos = new THREE.Mesh(PlanetUranusGeometry, planetUranosMaterial);
+planetUranos.position.set(460, 0, 0);
+PlanetUranosGroup.add(planetUranos);
+
+
+/* planet Neptune */
+
+const PlanetNeptuneGroup = new THREE.Group();
+scene.add(PlanetNeptuneGroup);
+
+texturePlanetNeptune.anisotropy = 16;
+const PlanetNeptuneGeometry = new THREE.IcosahedronGeometry(15, 10);
+const planetNeptuneMaterial = new THREE.MeshBasicMaterial({ 
+    map: texturePlanetNeptune
+});
+
+const planetNeptune = new THREE.Mesh(PlanetNeptuneGeometry, planetNeptuneMaterial);
+planetNeptune.position.set(520, 0, 0);
+PlanetNeptuneGroup.add(planetNeptune);
+
+// Create Neptune's rings
+const ringNeptuneGeometry = new THREE.RingGeometry(23, 18, 32);
+const ringNeptuneMaterial = new THREE.MeshBasicMaterial({
+    color: 0xaaaaaa,
+    side: THREE.DoubleSide,
+    transparent: false,
+    opacity: 0.8
+});
+const NeptuneRing = new THREE.Mesh(ringNeptuneGeometry, ringNeptuneMaterial);
+NeptuneRing.rotation.x = Math.PI / 5;  // Rotate the ring to lay flat
+planetNeptune.add(NeptuneRing); 
+
+
 const originalPositions = SunGeometry.attributes.position.array.slice();
 
 // Animation
 
-function animate( time ) {
+export function animate( time ) {
 
     if ( zoom > 400){
         camera.position.set(0,0,zoom);
-        zoom -= 50;
+        zoom -= 100;
     }
 
 	Universe.rotation.x = time / 80000;
 	Universe.rotation.y = time / 60000;
 
-    //sun.rotation.x = time / (-4000);
 	sun.rotation.y = time / (-8000);
 
     PlanetMercuryGroup.rotation.y = time / 1000;
@@ -161,12 +253,24 @@ function animate( time ) {
 	PlanetEarthGroup.rotation.y = time / 3000;
     planetEarth.rotation.y = time / 3000;
 
+    const moonOrbitTime = time / 800; 
+    Moon.position.x = Math.sin(moonOrbitTime) * 15;
+    Moon.position.z = Math.cos(moonOrbitTime) * 15;
+   
     PlanetMarsGroup.rotation.y = time / 4000;
     planetMars.rotation.y = time / 3000;
 
-    PlanetJupiterGroup.rotation.y = time / 4000;
+    PlanetJupiterGroup.rotation.y = time / 5000;
     planetJupiter.rotation.y = time / 3000;
 
+    PlanetSaturnGroup.rotation.y = time / 6000;
+    planetSatun.rotation.y = time / 3000;
+
+    PlanetUranosGroup.rotation.y = time / 7000;
+    planetUranos.rotation.y = time / 3000;
+
+    PlanetNeptuneGroup.rotation.y = time / 8000;
+    planetNeptune.rotation.y = time / 3000;
 
     //Sun Noise Animation
 
@@ -191,7 +295,7 @@ function animate( time ) {
         noiseValue *= 1.2;
 
         // Reset to original position before applying noise
-        vertex.fromArray(originalPositions, i * 3); // Important!
+        vertex.fromArray(originalPositions, i * 3);
 
         vertex.add(vertex.clone().normalize().multiplyScalar(noiseValue));
 
