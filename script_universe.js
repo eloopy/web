@@ -224,7 +224,7 @@ const ringNeptuneMaterial = new THREE.MeshBasicMaterial({
     opacity: 0.8
 });
 const NeptuneRing = new THREE.Mesh(ringNeptuneGeometry, ringNeptuneMaterial);
-NeptuneRing.rotation.x = Math.PI / 5;  // Rotate the ring to lay flat
+NeptuneRing.rotation.x = Math.PI / 5;  // Tilt the ring 
 planetNeptune.add(NeptuneRing); 
 
 
