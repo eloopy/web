@@ -242,7 +242,7 @@ export function animate( time ) {
 	Universe.rotation.x = time / 80000;
 	Universe.rotation.y = time / 60000;
 
-	sun.rotation.y = time / (-8000);
+	sun.rotation.y = time / (8000);
 
     PlanetMercuryGroup.rotation.y = time / 1000;
     planetMercury.rotation.y = time / 8000;
