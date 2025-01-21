@@ -6,12 +6,8 @@ let zoom = 12000;
 let timeNow = 0;
 let simplex = new SimplexNoise();
 
-window.addEventListener('load', function () {
-    const myTimeout = setTimeout(animate, 3000);
-  })
 
 // Init
-
 
 const scene = new THREE.Scene();
 
@@ -236,13 +232,14 @@ export function animate( time ) {
 
     if ( zoom > 400){
         camera.position.set(0,0,zoom);
-        zoom -= 100;
+        zoom -= 150;
+
     }
 
 	Universe.rotation.x = time / 80000;
 	Universe.rotation.y = time / 60000;
 
-	sun.rotation.y = time / (8000);
+	sun.rotation.y = time / (-8000);
 
     PlanetMercuryGroup.rotation.y = time / 1000;
     planetMercury.rotation.y = time / 8000;

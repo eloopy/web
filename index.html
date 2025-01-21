@@ -3,9 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -18,10 +15,11 @@
 
     
   </head>
-  <body onload="explodeText()">
-
-    <div id="explosion"></div>
+  <body >
+    
+    <canvas id="explosionCanvas"></canvas>
     <div id="Title">It All Started With A Big Bang</div>
+    <div id="controls">Drag Backgound to Move / Scroll to Zoom</div>
     
     <script type="importmap">
       {
@@ -37,9 +35,11 @@
       <script src="https://unpkg.com/split-type"></script>
 
       
-      <script src="./script.js"></script>
-      <script type="module" src="script_universe.js"></script>
+      <script type="module" src="./script_intro.js"></script>
+      <script type="module" src="./script_universe.js"></script>
+      
       
     
   </body>
 </html>
+ 
