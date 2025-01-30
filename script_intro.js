@@ -104,6 +104,7 @@ function explodeText() {
 function IntroCompleted(){
     particles = []; // Clear particles after animation
     document.getElementById("controls").style.visibility = "visible";
+    document.getElementById("menu").style.visibility = "visible";
 }
 
 

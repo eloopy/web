@@ -75,6 +75,7 @@ body {
     border: 2px solid white;
     max-width: 15vw; 
     max-height: 15vw;
+    visibility: hidden;
 }
 
 .menu.active {
