@@ -38,6 +38,20 @@
       <script type="module" src="./script_intro.js"></script>
       <script type="module" src="./script_universe.js"></script>
       
+      <div class="menu" onclick="toggleMenu()">
+        <ul>
+          <a href="https://github.com/eloopy/Electronic-Projects" target="_blank"><li>GitHub</li></a>
+            <li>About</li>
+            <li>Contact</li>
+        </ul>
+    </div>
+    
+    <script>
+        function toggleMenu() {
+            var menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
+        }
+    </script>
       
     
   </body>

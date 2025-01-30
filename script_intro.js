@@ -1,17 +1,45 @@
-
-
 import { animate } from "./script_universe.js";
+
 
 let particles = [];
 
 window.addEventListener('load', function () {
+    preloadParticles();
     revealTitle();
-  })
+})
+
+
+// Function to preload particles
+function preloadParticles() {
+    const canvas = document.getElementById('explosionCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function createParticle() {
+        const colors = ['#ac0404', '#e7ecf1']; 
+        return {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            vx: (Math.random() * 10 - 5) * 4, // change speed X
+            vy: (Math.random() * 10 - 5) * 4, // change speed Y
+            radius: Math.random() * 20 + 5,
+            life: Math.random() * 100 + 500,
+            alpha: 1,
+            color: colors[Math.floor(Math.random() * colors.length)]
+        };
+    }
+
+    // Preload particles
+    for (let i = 0; i < 200; i++) {
+        particles.push(createParticle());
+    }
+}
 
 const splitText = new SplitType('#Title');
 const chars = splitText.chars;
 
-//reveal title 
+// Reveal title 
 function revealTitle() {
     gsap.to(chars, {
         duration: 0.5,
@@ -25,14 +53,13 @@ function revealTitle() {
     });
 }
 
-
-//shake title
+// Shake title
 function shakeTitle() {
     gsap.to(chars,{
         delay: 2,
         scale: 1.1,
         duration: 0.4,
-        repeat: 15, 
+        repeat: 20, 
         yoyo: true, 
         ease: "steps(12)",
         x: () => gsap.utils.random(-3, 3),
@@ -43,16 +70,15 @@ function shakeTitle() {
     });
 }
 
-//explote text and create particles then call Universe animation
+// Explode text then call Particle and Universe animation
 function explodeText() {
-
     gsap.set(chars, {
         scale: 1,
         rotation: 0,
     });
 
     gsap.to(chars, {
-        delay: 2,
+        delay: 1.5,
         duration: 2,
         opacity: 0,
         scale: 2,
@@ -66,50 +92,35 @@ function explodeText() {
         },
         ease: "power2.out",
         onStart: () => {
-            createCanvasExplosion();
+            explpoteParticles();
             animate();
-
         },
         onComplete: () => {
             IntroCompleted();
-           
-      }
+        }
     });
 }
 
 function IntroCompleted(){
-
-    particles = [];
+    particles = []; // Clear particles after animation
     document.getElementById("controls").style.visibility = "visible";
 }
 
-function createCanvasExplosion() {
+
+// Explote particle animation
+function explpoteParticles() {
     const canvas = document.getElementById('explosionCanvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
-    function createParticle() {
-        return {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-            vx: (Math.random() * 10 - 5) * 4, // change speed X
-            vy: (Math.random() * 10 - 5) * 4, // change speed Y
-            radius: Math.random() * 20 + 5,
-            life: Math.random() * 100 + 500,
-            alpha: 1,
-            color: '#ac0404'
-        };
+    function drawParticle(particle) {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = particle.color;
+        ctx.globalAlpha = particle.alpha;
+        ctx.fill();
     }
 
-    function boom() {
-        for (let i = 0; i < 70; i++) {
-            particles.push(createParticle());
-        }
-    }
-
-
-    function update() {
+    function animateParticles() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         particles = particles.filter(particle => {
             particle.x += particle.vx;
@@ -117,17 +128,12 @@ function createCanvasExplosion() {
             particle.alpha -= 0.008;
 
             if (particle.alpha < 0) return false; 
-
-            ctx.beginPath();
-            ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2, false);
-            ctx.fillStyle = particle.color;
-            ctx.globalAlpha = particle.alpha;
-            ctx.fill();
+            drawParticle(particle);
             return true;
         });
-        requestAnimationFrame(update);
+        requestAnimationFrame(animateParticles);
     }
 
-    boom();
-    update();
+    animateParticles();
 }
+
