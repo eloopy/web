@@ -3,9 +3,21 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const width = window.innerWidth, height = window.innerHeight;
 let zoom = 12000;
-let timeNow = 0;
+let counter = 0;
+let play_pause = true;
 let simplex = new SimplexNoise();
 
+
+let element_play_pause = document.getElementById('play-pause');
+
+element_play_pause.addEventListener('click', function(event) {
+    play_pause = !play_pause;
+    if (play_pause) {
+        element_play_pause.innerHTML = 'Pause';
+    } else {
+        element_play_pause.innerHTML = 'Play';
+    }
+});
 
 // Init
 
@@ -230,80 +242,85 @@ const originalPositions = SunGeometry.attributes.position.array.slice();
 
 export function animate( time ) {
 
-    if ( zoom > 400){
-        camera.position.set(0,0,zoom);
-        zoom -= 150;
+    if (play_pause) {
 
-    }
+        if ( zoom > 400){
+            camera.position.set(0,0,zoom);
+            zoom -= 150;
 
-	Universe.rotation.x = time / 80000;
-	Universe.rotation.y = time / 60000;
+        }
 
-	sun.rotation.y = time / (-8000);
+        Universe.rotation.x = time / 80000;
+        Universe.rotation.y = time / 60000;
 
-    PlanetMercuryGroup.rotation.y = time / 1000;
-    planetMercury.rotation.y = time / 8000;
+        sun.rotation.y = time / (-8000);
 
-    PlanetVenusGroup.rotation.y = time / 2000;
-    planetVenus.rotation.y = time / 15000;
+        PlanetMercuryGroup.rotation.y = time / 1000;
+        planetMercury.rotation.y = time / 8000;
 
-	PlanetEarthGroup.rotation.y = time / 3000;
-    planetEarth.rotation.y = time / 3000;
+        PlanetVenusGroup.rotation.y = time / 2000;
+        planetVenus.rotation.y = time / 15000;
 
-    const moonOrbitTime = time / 800; 
-    Moon.position.x = Math.sin(moonOrbitTime) * 15;
-    Moon.position.z = Math.cos(moonOrbitTime) * 15;
+        PlanetEarthGroup.rotation.y = time / 3000;
+        planetEarth.rotation.y = time / 3000;
+
+        const moonOrbitTime = time / 800; 
+        Moon.position.x = Math.sin(moonOrbitTime) * 15;
+        Moon.position.z = Math.cos(moonOrbitTime) * 15;
+    
+        PlanetMarsGroup.rotation.y = time / 4000;
+        planetMars.rotation.y = time / 3000;
+
+        PlanetJupiterGroup.rotation.y = time / 5000;
+        planetJupiter.rotation.y = time / 3000;
+
+        PlanetSaturnGroup.rotation.y = time / 6000;
+        planetSatun.rotation.y = time / 3000;
+
+        PlanetUranosGroup.rotation.y = time / 7000;
+        planetUranos.rotation.y = time / 3000;
+
+        PlanetNeptuneGroup.rotation.y = time / 8000;
+        planetNeptune.rotation.y = time / 3000;
+
+    }     
+        //Sun Noise Animation
+
+        counter += 0.01;
+
+        const positionAttribute = SunGeometry.attributes.position;
+        const vertex = new THREE.Vector3();
+
+        for (let i = 0; i < positionAttribute.count; i++) {
+            vertex.fromBufferAttribute(positionAttribute, i);
+
+            // Get the vertex's spherical coordinates
+            const phi = Math.acos(vertex.y);
+            const theta = Math.atan2(vertex.z, vertex.x);
+
+            let noiseValue = simplex.noise3D(
+                vertex.x * 0.2 + counter,
+                vertex.y * 0.2 + counter,
+                vertex.z * 0.2 + counter
+            );
+
+            noiseValue *= 1.2;
+
+            // Reset to original position before applying noise
+            vertex.fromArray(originalPositions, i * 3);
+
+            vertex.add(vertex.clone().normalize().multiplyScalar(noiseValue));
+
+            positionAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
+        }
+
+        positionAttribute.needsUpdate = true;
+        SunGeometry.computeVertexNormals();
+
+        renderer.render( scene, camera );
+        requestAnimationFrame(animate);
+
    
-    PlanetMarsGroup.rotation.y = time / 4000;
-    planetMars.rotation.y = time / 3000;
-
-    PlanetJupiterGroup.rotation.y = time / 5000;
-    planetJupiter.rotation.y = time / 3000;
-
-    PlanetSaturnGroup.rotation.y = time / 6000;
-    planetSatun.rotation.y = time / 3000;
-
-    PlanetUranosGroup.rotation.y = time / 7000;
-    planetUranos.rotation.y = time / 3000;
-
-    PlanetNeptuneGroup.rotation.y = time / 8000;
-    planetNeptune.rotation.y = time / 3000;
-
-    //Sun Noise Animation
-
-    timeNow += 0.01;
-
-    const positionAttribute = SunGeometry.attributes.position;
-    const vertex = new THREE.Vector3();
-
-    for (let i = 0; i < positionAttribute.count; i++) {
-        vertex.fromBufferAttribute(positionAttribute, i);
-
-        // Get the vertex's spherical coordinates
-        const phi = Math.acos(vertex.y);
-        const theta = Math.atan2(vertex.z, vertex.x);
-
-        let noiseValue = simplex.noise3D(
-            vertex.x * 0.2 + timeNow,
-            vertex.y * 0.2 + timeNow,
-            vertex.z * 0.2 + timeNow
-        );
-
-        noiseValue *= 1.2;
-
-        // Reset to original position before applying noise
-        vertex.fromArray(originalPositions, i * 3);
-
-        vertex.add(vertex.clone().normalize().multiplyScalar(noiseValue));
-
-        positionAttribute.setXYZ(i, vertex.x, vertex.y, vertex.z);
-    }
-
-    positionAttribute.needsUpdate = true;
-    SunGeometry.computeVertexNormals();
-
-	renderer.render( scene, camera );
-    requestAnimationFrame(animate);
 }
 
 

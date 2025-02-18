@@ -54,6 +54,10 @@ body {
     z-index: 2;
 }
 
+#play-pause:hover {
+    cursor: pointer;
+}
+
 /*---------------------------------------*/
 
 .menu {
