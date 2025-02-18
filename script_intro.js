@@ -36,7 +36,7 @@ function preloadParticles() {
     }
 }
 
-const splitText = new SplitType('#Title');
+const splitText = new SplitType('#caption');
 const chars = splitText.chars;
 
 // Reveal title 
@@ -78,7 +78,7 @@ function explodeText() {
     });
 
     gsap.to(chars, {
-        delay: 1.5,
+        delay: 1,
         duration: 2,
         opacity: 0,
         scale: 2,
