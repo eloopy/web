@@ -6,7 +6,7 @@
   <script>
     window.onload = async function () {
       try {
-        const response = await fetch('https://script.google.com/macros/s/YOUR_SCRIPT_URL_HERE/exec');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwwRzmEMdniHfq_HhahdX0sHzCJJT1zfQXjTe2AwVWNIDwdMAJ63hF1Gxtbrse77uPBbA/exec');
         if (!response.ok) throw new Error('Failed to fetch IP');
 
         const ip = await response.text();
