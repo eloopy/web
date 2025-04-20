@@ -1,3 +1,3 @@
 # Eloopy.Space
 
-Personal website showing off my projects and skills
+Personal website showing my projects and skills
