@@ -6,31 +6,27 @@
   <script>
     function handleLogin(event) {
       event.preventDefault();
-      const password = document.getElementById('password').value;
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwwRzmEMdniHfq_HhahdX0sHzCJJT1zfQXjTe2AwVWNIDwdMAJ63hF1Gxtbrse77uPBbA/exec';
+      const password = document.getElementById('password').value.trim();
+      if (!password) return;
 
-      fetch(scriptURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'password=' + encodeURIComponent(password)
-      })
-      .then(response => response.text())
-      .then(result => {
-        const trimmed = result.trim();
-        if (trimmed === "0") {
-          document.getElementById('message').innerText = "Invalid password. Please try again.";
-        } else {
-          const targetURL = `http://${trimmed}:7117`;
-          console.log("Redirecting to:", targetURL);
-          window.location.href = targetURL;
-        }
-      })
-      .catch(error => {
-        console.error("Failed to fetch IP:", error);
-        document.getElementById('message').innerText = "Failed to connect to script.";
-      });
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwwRzmEMdniHfq_HhahdX0sHzCJJT1zfQXjTe2AwVWNIDwdMAJ63hF1Gxtbrse77uPBbA/exec?password=' + encodeURIComponent(password);
+
+      fetch(scriptURL)
+        .then(response => response.text())
+        .then(result => {
+          const trimmed = result.trim();
+          if (trimmed === "0") {
+            document.getElementById('message').innerText = "Invalid password. Please try again.";
+          } else {
+            const targetURL = `http://${trimmed}:7117`;
+            console.log("Redirecting to:", targetURL);
+            window.location.href = targetURL;
+          }
+        })
+        .catch(error => {
+          console.error("Failed to fetch IP:", error);
+          document.getElementById('message').innerText = "Failed to connect to script.";
+        });
     }
   </script>
 </head>
