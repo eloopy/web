@@ -15,7 +15,7 @@
         .then(response => response.text())
         .then(result => {
           const trimmed = result.trim();
-          if (trimmed === "0") {
+          if (trimmed === "nope") {
             document.getElementById('message').innerText = "Invalid password. Please try again.";
           } else {
             const targetURL = `http://${trimmed}:7117`;
