@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Eloopy HomeCam</title>
+  <script>
+    window.onload = function () {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwwRzmEMdniHfq_HhahdX0sHzCJJT1zfQXjTe2AwVWNIDwdMAJ63hF1Gxtbrse77uPBbA/exec';
+
+      fetch(scriptURL)
+        .then(response => response.text())
+        .then(ip => {
+          if (ip) {
+            const targetURL = `http://${ip.trim()}` + `:7117`;
+            console.log("Redirecting to:", targetURL);
+            window.location.href = targetURL;
+          } else {
+            document.body.innerHTML = "<h3>Error: No IP found</h3>";
+          }
+        })
+        .catch(error => {
+          console.error("Failed to fetch IP:", error);
+          document.body.innerHTML = "<h3>Failed to connect to script</h3>";
+        });
+    };
+  </script>
+</head>
+<body>
+  <center><h1>Redirecting to HomeCam address...</h1></center>
+</body>
+</html>
