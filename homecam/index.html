@@ -11,7 +11,7 @@
         .then(response => response.text())
         .then(ip => {
           if (ip) {
-            const targetURL = `http://${ip.trim()}`;
+            const targetURL = `http://${ip.trim()}` +`:7117` ;
             console.log("Redirecting to:", targetURL);
             window.location.href = targetURL;
           } else {
