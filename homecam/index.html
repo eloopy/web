@@ -3,6 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Eloopy HomeCam - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      padding-top: 50px;
+    }
+    input[type="password"] {
+      font-size: 22px;
+      padding: 10px;
+      width: 300px;
+      margin-bottom: 20px;
+    }
+    button {
+      font-size: 22px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    #message {
+      color: red;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+  </style>
   <script>
     function handleLogin(event) {
       event.preventDefault();
@@ -28,16 +51,22 @@
           document.getElementById('message').innerText = "Failed to connect to script.";
         });
     }
+
+    function clearMessage() {
+      document.getElementById('message').innerText = "";
+    }
   </script>
 </head>
 <body>
   <center>
     <h1>Eloopy HomeCam Login</h1>
     <form onsubmit="handleLogin(event)">
-      <input type="password" id="password" placeholder="Enter password" required>
+      <input type="password" id="password" placeholder="Enter password" required onclick="clearMessage()">
+      <br>
       <button type="submit">Login</button>
     </form>
-    <p id="message" style="color: red;"></p>
+    <p id="message"></p>
   </center>
 </body>
 </html>
+
